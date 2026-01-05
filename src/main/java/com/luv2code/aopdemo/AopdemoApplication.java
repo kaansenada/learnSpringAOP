@@ -18,8 +18,6 @@ public class AopdemoApplication {
 	public CommandLineRunner commandLineRunner(AccountDao accountDao, MembershipDao membershipDao){
 		return runner -> {
 			demoBeforeAdvice(accountDao, membershipDao);
-
-
 		};
 	}
 
@@ -28,6 +26,12 @@ public class AopdemoApplication {
 		Account accountTest = new Account();
 
 		accountDao.addAccount(accountTest,true);
+		accountDao.setName("KaanDao");
+		accountDao.setServiceCode("0000311313");
+
+		String name = accountDao.getName();
+		String serviceCodeAtHand = accountDao.getServiceCode();
+
 		membershipDao.addDummyMember();
 	}
 
