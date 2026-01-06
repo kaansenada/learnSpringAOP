@@ -13,6 +13,18 @@ import java.util.List;
 @Component
 @Order(1)
 public class MyDemoLoginAspect {
+
+    @AfterThrowing(
+            pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))",
+            throwing = "exception"
+    )
+    public void afterThrowingAdvice(JoinPoint joinPoint, Throwable exception){
+        String methodName = joinPoint.getSignature().toShortString();
+        System.out.println("\n=======> Executing @AfterThrowing on method: " + methodName);
+
+        System.out.println("\n=======> Exception is  " + exception);
+    }
+
     @AfterReturning(
             pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))",
             returning = "result"
@@ -31,7 +43,6 @@ public class MyDemoLoginAspect {
     private void convertNamesToUperCase(List<Account> result) {
         result.forEach(account -> account.setName(account.getName().toUpperCase()));
     }
-
 
     @Before("com.luv2code.aopdemo.aspect.AopExpressions.forDaoAddMethods()")
     public void beforeAddAccountAdvice(JoinPoint joinPoint) {
