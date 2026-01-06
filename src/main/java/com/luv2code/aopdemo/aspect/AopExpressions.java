@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Pointcut;
 //sadece @Before @After gibi advice lar için gereklidir.
 @Aspect
 public class AopExpressions {
-
+    //pointcut'lar sık kullanılacak advice içeriklerini tutmak için kullanılır
     @Pointcut("execution(* com.luv2code.aopdemo.dao.*.add*(..))")
     public void forDaoAddMethods() {}
 
