@@ -2,6 +2,7 @@ package com.luv2code.aopdemo;
 
 import com.luv2code.aopdemo.dao.AccountDao;
 import com.luv2code.aopdemo.dao.MembershipDao;
+import com.luv2code.aopdemo.service.TrafficFortuneService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,13 +18,32 @@ public class AopdemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(AccountDao accountDao, MembershipDao membershipDao){
+	public CommandLineRunner commandLineRunner(AccountDao accountDao, MembershipDao membershipDao, TrafficFortuneService trafficFortuneService){
 		return runner -> {
 			demoBeforeAdvice(accountDao, membershipDao);
 			demoAfterReturningAdvice(accountDao);
 			demoAfterThrowingAdvice(accountDao);
 			demoAfterAdvice(accountDao);
+			demoAroundAdvice(trafficFortuneService);
+			demoAroundAdviceHandleException(trafficFortuneService);
 		};
+	}
+
+	private void demoAroundAdviceHandleException(TrafficFortuneService trafficFortuneService) {
+		System.out.println("DemoAroundAdviceHandleException");
+		System.out.println("-------------------");
+		System.out.println("Calling getFortune()");
+		boolean flag = true;
+		String data = trafficFortuneService.getFortune(flag);
+		System.out.println("Fortune is: "+data);
+	}
+
+	private void demoAroundAdvice(TrafficFortuneService trafficFortuneService) {
+		System.out.println("DemoAroundAdvice");
+		System.out.println("-------------------");
+		System.out.println("Calling getFortune()");
+		String data = trafficFortuneService.getFortune();
+		System.out.println("Fortune is: "+data);
 	}
 
 	private void demoAfterAdvice(AccountDao accountDao) {
@@ -39,7 +59,6 @@ public class AopdemoApplication {
 		}
 
 		System.out.println("Accounts: " + accounts);
-		System.out.printf("\n");
 	}
 
 	private void demoAfterThrowingAdvice(AccountDao accountDao) {
@@ -55,7 +74,6 @@ public class AopdemoApplication {
 		}
 
 		System.out.println("Accounts: " + accounts);
-		System.out.printf("\n");
 	}
 
 	private void demoAfterReturningAdvice(AccountDao accountDao) {
@@ -65,7 +83,6 @@ public class AopdemoApplication {
 		List<Account> accounts = accountDao.findAccounts();
 
 		System.out.println("Accounts: " + accounts);
-		System.out.printf("\n");
 	}
 
 	private void demoBeforeAdvice(AccountDao accountDao, MembershipDao membershipDao) {

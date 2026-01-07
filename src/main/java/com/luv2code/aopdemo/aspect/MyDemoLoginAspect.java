@@ -2,6 +2,7 @@ package com.luv2code.aopdemo.aspect;
 
 import com.luv2code.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
@@ -13,6 +14,26 @@ import java.util.List;
 @Component
 @Order(1)
 public class MyDemoLoginAspect {
+
+    @Around("execution(* com.luv2code.aopdemo.service.*.getFortune(..))")
+    public Object aroundGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws  Throwable{
+        String methodName = proceedingJoinPoint.getSignature().toShortString();
+        System.out.println("\n=======> Executing @Around on method: " + methodName);
+
+        long beginTime = System.nanoTime();
+        Object result;
+        try {
+            result = proceedingJoinPoint.proceed();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            result = "Major Accident Take Caution";
+        }
+        long endTime = System.nanoTime();
+
+        System.out.println("Duration:  " + (endTime-beginTime) + " nanosecs");
+
+        return result;
+    }
 
     @After("execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))")
     public void afterAdvice(JoinPoint joinPoint){
