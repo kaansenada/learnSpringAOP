@@ -22,7 +22,24 @@ public class AopdemoApplication {
 			demoBeforeAdvice(accountDao, membershipDao);
 			demoAfterReturningAdvice(accountDao);
 			demoAfterThrowingAdvice(accountDao);
+			demoAfterAdvice(accountDao);
 		};
+	}
+
+	private void demoAfterAdvice(AccountDao accountDao) {
+		System.out.println("DemoAfterThrowingAdvice");
+		System.out.println("-------------------");
+
+		List<Account> accounts = null;
+		try{
+			boolean flag = false;
+			accounts = accountDao.findAccounts(flag);
+		}catch (Exception e){
+			System.out.println("Exceptption: " + e);
+		}
+
+		System.out.println("Accounts: " + accounts);
+		System.out.printf("\n");
 	}
 
 	private void demoAfterThrowingAdvice(AccountDao accountDao) {

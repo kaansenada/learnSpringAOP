@@ -14,6 +14,12 @@ import java.util.List;
 @Order(1)
 public class MyDemoLoginAspect {
 
+    @After("execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))")
+    public void afterAdvice(JoinPoint joinPoint){
+        String methodName = joinPoint.getSignature().toShortString();
+        System.out.println("\n=======> Executing @After on method: " + methodName);
+    }
+
     @AfterThrowing(
             pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))",
             throwing = "exception"
